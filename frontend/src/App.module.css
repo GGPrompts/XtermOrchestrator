@@ -1,0 +1,287 @@
+.app {
+  min-height: 100vh;
+  background: #0a0e27;
+  color: #00ff41;
+  font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Hero Section */
+.heroSection {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding: 2rem 0;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: rgba(0, 255, 65, 0.8);
+  margin-bottom: 3rem;
+}
+
+.launchOptions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 2px solid #00ff41;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #00ff41;
+  background: rgba(0, 255, 65, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover {
+  background: rgba(0, 255, 65, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 255, 65, 0.3);
+}
+
+.primaryButton:before,
+.secondaryButton:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.primaryButton:hover:before,
+.secondaryButton:hover:before {
+  left: 100%;
+}
+
+.buttonIcon {
+  font-size: 2.5rem;
+}
+
+.primaryButton h3,
+.secondaryButton h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.primaryButton p,
+.secondaryButton p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(0, 255, 65, 0.7);
+}
+
+/* Features Section */
+.featuresSection {
+  margin-bottom: 4rem;
+}
+
+.featuresSection h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #00ff41;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.featureCard {
+  background: rgba(0, 255, 65, 0.05);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.featureCard:hover {
+  background: rgba(0, 255, 65, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 255, 65, 0.2);
+}
+
+.featureIcon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.featureCard h3 {
+  margin: 0 0 1rem 0;
+  color: #00ff41;
+}
+
+.featureCard p {
+  margin: 0;
+  color: rgba(0, 255, 65, 0.7);
+  font-size: 0.9rem;
+}
+
+/* Quick Start Section */
+.quickStartSection {
+  margin-bottom: 4rem;
+}
+
+.quickStartSection h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #00ff41;
+}
+
+.codeBlock {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.step {
+  margin-bottom: 1.5rem;
+}
+
+.step:last-child {
+  margin-bottom: 0;
+}
+
+.step h4 {
+  margin: 0 0 0.5rem 0;
+  color: #00ff41;
+}
+
+.step code {
+  display: block;
+  background: rgba(0, 255, 65, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #00ff41;
+  border: 1px solid rgba(0, 255, 65, 0.3);
+}
+
+/* Commands Section */
+.commandsSection {
+  margin-bottom: 4rem;
+}
+
+.commandsSection h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #00ff41;
+}
+
+.commandGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.commandCard {
+  background: rgba(0, 255, 65, 0.05);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.commandCard code {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #00ff41;
+  font-weight: bold;
+}
+
+.commandCard p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(0, 255, 65, 0.7);
+}
+
+/* Footer */
+.footer {
+  margin-top: 4rem;
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(0, 255, 65, 0.3);
+  color: rgba(0, 255, 65, 0.7);
+}
+
+.footer p {
+  margin-bottom: 1rem;
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+}
+
+.footerLinks a {
+  color: #00ff41;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.footerLinks a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.footerLinks span {
+  color: rgba(0, 255, 65, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .launchOptions {
+    grid-template-columns: 1fr;
+  }
+  
+  .main {
+    padding: 1rem;
+  }
+}

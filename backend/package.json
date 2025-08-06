@@ -1,0 +1,20 @@
+{
+  "name": "ai-terminal-backend",
+  "version": "1.0.0",
+  "description": "Terminal emulation backend for AI orchestrator",
+  "main": "terminal-orchestrator.js",
+  "scripts": {
+    "start": "node terminal-orchestrator.js",
+    "dev": "nodemon terminal-orchestrator.js"
+  },
+  "dependencies": {
+    "ws": "^8.14.0",
+    "node-pty": "^1.0.0",
+    "express": "^4.18.2",
+    "uuid": "^9.0.1",
+    "@anthropic-ai/claude-code": "^1.0.67"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,262 @@
+/* Matrix-inspired terminal styling */
+.simpleTerminal {
+  display: flex;
+  flex-direction: column;
+  background: 
+    radial-gradient(circle at 25% 25%, #0f0f23 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, #001a2e 0%, transparent 50%),
+    #000814;
+  border: 1px solid #00ff41;
+  border-radius: 6px;
+  min-height: 200px;
+  height: 100%;
+  max-height: 500px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  color: #00ff41;
+  overflow: hidden;
+  cursor: text;
+  position: relative;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 65, 0.3),
+    inset 0 0 20px rgba(0, 255, 65, 0.1);
+}
+
+.simpleTerminal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 65, 0.02) 2px,
+      rgba(0, 255, 65, 0.02) 4px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.terminalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: rgba(0, 20, 40, 0.8);
+  border-bottom: 1px solid #00ff41;
+  font-size: 12px;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.terminalActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.closeButton {
+  background: none;
+  border: 1px solid #ff0040;
+  color: #ff0040;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: #ff0040;
+  color: #000;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #ff0040;
+}
+
+.closeButton:active {
+  transform: scale(0.95);
+}
+
+.terminalTitle {
+  color: #00ff41;
+  font-weight: 500;
+  flex: 1;
+  text-shadow: 0 0 5px #00ff41;
+}
+
+.connectionStatus {
+  color: #0ff;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 6px;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid #0ff;
+  border-radius: 3px;
+  text-shadow: 0 0 3px #0ff;
+}
+
+.terminalId {
+  color: #ffff00;
+  font-size: 10px;
+  text-shadow: 0 0 3px #ffff00;
+}
+
+.terminalContent {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #00ff41 #001a2e;
+  position: relative;
+  z-index: 2;
+}
+
+.terminalContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminalContent::-webkit-scrollbar-track {
+  background: #001a2e;
+}
+
+.terminalContent::-webkit-scrollbar-thumb {
+  background: #00ff41;
+  border-radius: 4px;
+  box-shadow: 0 0 5px #00ff41;
+}
+
+.terminalLine {
+  margin-bottom: 4px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-shadow: 0 0 3px currentColor;
+}
+
+/* Matrix-style line colors */
+.terminalLine:has-text("[LAUNCH]"),
+.terminalLine:has-text("[OK]") {
+  color: #00ff41;
+  text-shadow: 0 0 5px #00ff41;
+}
+
+.terminalLine:has-text("[STATS]"),
+.terminalLine:has-text("[NETWORK]") {
+  color: #0ff;
+  text-shadow: 0 0 5px #0ff;
+}
+
+.terminalLine:has-text("[BRANCH]"),
+.terminalLine:has-text("[TIP]") {
+  color: #ffff00;
+  text-shadow: 0 0 5px #ffff00;
+}
+
+.terminalLine:has-text("📁"),
+.terminalLine:has-text("📤") {
+  color: #ff00ff;
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+.terminalLine:has-text("⚠️") {
+  color: #ffff00;
+  text-shadow: 0 0 5px #ffff00;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.terminalLine:has-text("❌") {
+  color: #ff0040;
+  text-shadow: 0 0 5px #ff0040;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.currentLine {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.prompt {
+  color: #00ff41;
+  margin-right: 8px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #00ff41;
+}
+
+.terminalInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #00ff41;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  caret-color: #00ff41;
+  text-shadow: 0 0 3px #00ff41;
+}
+
+.terminalInput::placeholder {
+  color: #0ff;
+  opacity: 0.7;
+  text-shadow: 0 0 3px #0ff;
+}
+
+.loadingIndicator {
+  color: #ffff00;
+  margin-left: 8px;
+  animation: pulse 1.5s ease-in-out infinite alternate;
+  text-shadow: 0 0 5px #ffff00;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.6;
+    text-shadow: 0 0 3px currentColor;
+  }
+  to {
+    opacity: 1;
+    text-shadow: 0 0 8px currentColor;
+  }
+}
+
+/* Matrix digital rain effect for terminal */
+.simpleTerminal::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 98px,
+      rgba(0, 255, 65, 0.03) 100px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hover and focus effects */
+.simpleTerminal:hover {
+  border-color: #0ff;
+  box-shadow: 
+    0 0 25px rgba(0, 255, 255, 0.4),
+    inset 0 0 25px rgba(0, 255, 255, 0.1);
+}
+
+.terminalInput:focus {
+  text-shadow: 0 0 8px #00ff41;
+}

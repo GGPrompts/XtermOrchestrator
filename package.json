@@ -1,0 +1,22 @@
+{
+  "name": "standalone-xterm-orchestrator",
+  "version": "1.0.0",
+  "description": "Standalone web-based terminal orchestrator with xterm.js and PTY backend",
+  "keywords": ["terminal", "xterm", "pty", "orchestrator", "claude", "web-terminal"],
+  "author": "Matt",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/standalone-xterm-orchestrator"
+  },
+  "scripts": {
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down",
+    "logs": "docker-compose logs -f",
+    "build": "docker-compose build",
+    "clean": "docker-compose down -v"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

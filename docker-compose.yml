@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # Frontend - React with xterm.js
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: xterm-orchestrator-frontend
+    ports:
+      - "8088:3000"
+    environment:
+      - VITE_WS_URL=ws://localhost:8126
+    depends_on:
+      - backend
+    networks:
+      - terminal-network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  # Backend - Node.js with PTY support
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: xterm-orchestrator-backend
+    ports:
+      - "8126:8126"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./workspaces:/workspaces
+      # Mount your project directories here
+      - ../:/projects:rw  # Parent directory with all your projects
+      # Claude configuration
+      - claude-config:/home/node/.config/claude
+    environment:
+      - TERMINAL_PORT=8126
+      - NODE_ENV=production
+      # Add your Claude OAuth token here or in .env file
+      - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN:-}
+    networks:
+      - terminal-network
+    # Required for PTY support
+    stdin_open: true
+    tty: true
+
+networks:
+  terminal-network:
+    driver: bridge
+
+volumes:
+  claude-config:  # Persistent Claude configuration
+  workspaces:     # Persistent agent workspaces

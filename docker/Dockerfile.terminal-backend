@@ -1,0 +1,36 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install system dependencies for terminal emulation and node-pty
+RUN apk add --no-cache python3 make g++ bash curl
+
+# Install Claude Code CLI globally as root
+RUN npm install -g @anthropic-ai/claude-code
+
+# Copy package files and change ownership
+COPY terminal-backend/package*.json ./
+RUN chown -R node:node /app
+
+# Switch to node user for the rest
+USER node
+
+# Install dependencies
+RUN npm install
+
+# Copy source code and ensure ownership
+USER root
+COPY terminal-backend/ .
+
+# Create logs directory and ensure proper ownership
+RUN mkdir -p /logs/terminal-backend /sessions /workspace && \
+    chown -R node:node /app && \
+    chown -R node:node /logs && \
+    chown -R node:node /sessions && \
+    chown -R node:node /workspace
+
+USER node
+
+EXPOSE 8126
+
+CMD ["npm", "start"]

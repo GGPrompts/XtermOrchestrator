@@ -1,0 +1,712 @@
+.orchestratorPage {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background: #0a0e27;
+    color: #00ff41;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(0, 255, 65, 0.1);
+    border-bottom: 2px solid #00ff41;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px #00ff41;
+}
+
+.status {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.connected {
+    color: #00ff41;
+}
+
+.disconnected {
+    color: #ff0044;
+}
+
+.agentCount {
+    padding: 0.5rem 1rem;
+    background: rgba(0, 255, 65, 0.2);
+    border: 1px solid #00ff41;
+    border-radius: 4px;
+}
+
+.historyButton {
+    padding: 0.5rem 1rem;
+    background: rgba(0, 255, 65, 0.1);
+    border: 1px solid #00ff41;
+    border-radius: 4px;
+    color: #00ff41;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s ease;
+}
+
+.historyButton:hover {
+    background: rgba(0, 255, 65, 0.3);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.mainContent {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    min-height: 0; /* Allow flex items to shrink below content size */
+}
+
+.terminalSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    min-height: 0; /* Allow terminal to shrink */
+    min-width: 0; /* Allow terminal to shrink */
+}
+
+.terminal {
+    flex: 1;
+    background: #000;
+    border: 2px solid #00ff41;
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+    overflow: hidden; /* Prevent content overflow */
+    min-height: 200px; /* Minimum height for usability */
+    width: 100%; /* Full width of container */
+    position: relative; /* Enable proper positioning for xterm */
+}
+
+/* Ensure xterm terminal fills the container properly */
+.terminal :global(.xterm) {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.terminal :global(.xterm-viewport) {
+    background-color: transparent !important;
+}
+
+.terminal :global(.xterm-screen) {
+    height: 100% !important;
+}
+
+/* Status panel removed - content moved to left sidebar */
+
+.agentList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.agentCard {
+    padding: 0.75rem;
+    background: rgba(0, 255, 65, 0.1);
+    border: 1px solid #00ff41;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.agentCard.working {
+    background: rgba(255, 255, 0, 0.1);
+    border-color: #ffff00;
+    animation: pulse 1s infinite;
+}
+
+.agentCard.error {
+    background: rgba(255, 0, 68, 0.1);
+    border-color: #ff0044;
+}
+
+.agentCard.completed {
+    background: rgba(0, 255, 65, 0.2);
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.agentName {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.agentStatus {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.agentTask {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+.queueList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.queueItem {
+    padding: 0.5rem;
+    background: rgba(0, 128, 255, 0.1);
+    border: 1px solid #0080ff;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.queueItem.processing {
+    background: rgba(255, 255, 0, 0.1);
+    border-color: #ffff00;
+}
+
+.queueItem.completed {
+    background: rgba(0, 255, 65, 0.1);
+    border-color: #00ff41;
+}
+
+.promptText {
+    margin-bottom: 0.25rem;
+    word-wrap: break-word;
+}
+
+.promptTarget {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.leftSidebar {
+    width: 400px;
+    min-width: 300px;
+    max-width: 600px;
+    background: rgba(0, 0, 0, 0.8);
+    border-right: 1px solid #00ff41;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    resize: horizontal;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent sidebar from shrinking too much */
+}
+
+.sidebarControls {
+    padding: 0.5rem 1rem;
+    background: rgba(0, 255, 65, 0.1);
+    border-bottom: 1px solid #00ff41;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.toggleOption {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.toggleOption input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.statusSection,
+.queueSection {
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.statusSection h3,
+.queueSection h3 {
+    font-size: 1.1rem;
+    margin: 0 0 0.75rem 0;
+    color: #00ff41;
+    text-shadow: 0 0 5px #00ff41;
+}
+
+.chatSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 200px;
+}
+
+/* Override chat interface styles for orchestrator theme */
+.chatSection :global(.chatInterface) {
+    background: transparent;
+    border: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatSection :global(.chatHeader) {
+    background: rgba(0, 255, 65, 0.1);
+}
+
+.chatSection :global(.messageTextarea) {
+    background: rgba(0, 0, 0, 0.7);
+    border-color: #00ff41;
+    color: #00ff41;
+}
+
+.chatSection :global(.sendButton) {
+    background: #00ff41;
+    color: #000;
+}
+
+.noAgents, .emptyQueue {
+    padding: 1rem;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    border: 1px dashed #333;
+    border-radius: 4px;
+}
+
+.hiddenBadge {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.promptMeta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 0.25rem;
+}
+
+.promptPriority {
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+}
+
+.promptPriority[data-priority="high"] {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff6666;
+}
+
+.promptPriority[data-priority="medium"] {
+    background: rgba(255, 255, 0, 0.2);
+    color: #ffff66;
+}
+
+.promptPriority[data-priority="low"] {
+    background: rgba(0, 255, 0, 0.2);
+    color: #66ff66;
+}
+
+.chatControls {
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid #00ff41;
+    flex-shrink: 0;
+}
+
+.autoExecuteToggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.autoExecuteToggle input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.warningText {
+    color: #ffaa00;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.pasteHelper {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+    border-radius: 4px;
+}
+
+.pasteButton {
+    background: #00ff41;
+    color: #000;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.pasteButton:hover {
+    background: #00cc33;
+    box-shadow: 0 0 10px #00ff41;
+}
+
+.pasteForm {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.pasteInput {
+    flex: 1;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #00ff41;
+    border-radius: 4px;
+    color: #00ff41;
+    font-family: 'Courier New', monospace;
+}
+
+.pasteInput::placeholder {
+    color: #666;
+}
+
+.pasteInput:focus {
+    outline: none;
+    box-shadow: 0 0 5px #00ff41;
+}
+
+/* Tab System Styles */
+.tabBar {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #00ff41;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 0.25rem 0.5rem;
+    gap: 0.25rem;
+    overflow-x: auto;
+    flex-shrink: 0; /* Prevent tab bar from shrinking */
+    min-height: 40px; /* Ensure tab bar has minimum height */
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 255, 65, 0.1);
+    border: 1px solid #00ff41;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    max-width: 200px;
+    position: relative;
+}
+
+.tab:hover {
+    background: rgba(0, 255, 65, 0.2);
+}
+
+.activeTab {
+    background: #0a0e27;
+    border-bottom: 2px solid #0a0e27;
+    z-index: 1;
+}
+
+.tabName {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #00ff41;
+    font-size: 0.9rem;
+}
+
+.tabClose {
+    background: none;
+    border: none;
+    color: #00ff41;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0 0.25rem;
+    margin-left: 0.5rem;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.tabClose:hover {
+    opacity: 1;
+    color: #ff0044;
+}
+
+.newTabButton {
+    background: rgba(0, 255, 65, 0.2);
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.newTabButton:hover {
+    background: rgba(0, 255, 65, 0.3);
+    box-shadow: 0 0 5px #00ff41;
+}
+
+.tabRenameInput {
+    background: transparent;
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+    font-family: 'Courier New', monospace;
+    outline: none;
+    width: 100%;
+    max-width: 150px;
+}
+
+.tabRenameInput:focus {
+    box-shadow: 0 0 5px #00ff41;
+}
+
+/* Split View Layout */
+.splitContainer {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.splitContainer.split-none {
+    flex-direction: row;
+}
+
+.splitContainer.split-horizontal {
+    flex-direction: column;
+}
+
+.splitContainer.split-vertical {
+    flex-direction: row;
+}
+
+.agentTerminalsSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid #00ff41;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.splitContainer.split-horizontal .agentTerminalsSection {
+    border-left: none;
+    border-top: 2px solid #00ff41;
+}
+
+.splitControls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(0, 255, 65, 0.1);
+    border-bottom: 1px solid #00ff41;
+}
+
+.layoutBtn {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 0.25rem 0.75rem;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: monospace;
+    transition: all 0.2s ease;
+}
+
+.layoutBtn:hover {
+    background: rgba(0, 255, 65, 0.2);
+}
+
+.layoutBtn.active {
+    background: rgba(0, 255, 65, 0.3);
+    box-shadow: 0 0 5px #00ff41;
+}
+
+.agentTerminalsGrid {
+    flex: 1;
+    display: flex;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    overflow: auto;
+}
+
+.splitContainer.split-horizontal .agentTerminalsGrid {
+    flex-direction: row;
+}
+
+.splitContainer.split-vertical .agentTerminalsGrid {
+    flex-direction: column;
+}
+
+/* Agent Actions */
+.agentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.agentActions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.viewBtn {
+    background: rgba(0, 255, 65, 0.2);
+    border: 1px solid #00ff41;
+    color: #00ff41;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.viewBtn:hover {
+    background: rgba(0, 255, 65, 0.3);
+    box-shadow: 0 0 5px #00ff41;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+    .leftSidebar {
+        width: 350px;
+        min-width: 280px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .leftSidebar {
+        width: 320px;
+        min-width: 250px;
+    }
+    
+    .header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .header h1 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .orchestratorPage {
+        height: 100vh;
+        height: 100dvh; /* Use dynamic viewport height on mobile */
+    }
+    
+    .mainContent {
+        flex-direction: column;
+    }
+    
+    .leftSidebar {
+        width: 100%;
+        height: 280px;
+        max-height: 35vh;
+        min-width: auto;
+        border-right: none;
+        border-bottom: 1px solid #00ff41;
+        resize: vertical;
+        flex-shrink: 0;
+    }
+    
+    .statusSection,
+    .queueSection {
+        max-height: 120px;
+        padding: 0.75rem;
+    }
+    
+    .chatSection {
+        min-height: 150px;
+    }
+    
+    .header {
+        padding: 0.5rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .status {
+        gap: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .terminal {
+        min-height: 150px;
+    }
+    
+    .tabBar {
+        padding: 0.25rem;
+        min-height: 35px;
+    }
+    
+    .tab {
+        min-width: 80px;
+        max-width: 150px;
+        padding: 0.4rem 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.1rem;
+    }
+    
+    .leftSidebar {
+        height: 250px;
+        max-height: 30vh;
+    }
+    
+    .terminalSection {
+        padding: 0.25rem;
+    }
+    
+    .statusSection h3,
+    .queueSection h3 {
+        font-size: 1rem;
+    }
+    
+    .agentCard {
+        padding: 0.5rem;
+    }
+    
+    .tab {
+        min-width: 60px;
+        max-width: 120px;
+        padding: 0.3rem 0.5rem;
+    }
+    
+    .tabName {
+        font-size: 0.8rem;
+    }
+}

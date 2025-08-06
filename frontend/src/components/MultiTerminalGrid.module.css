@@ -1,0 +1,471 @@
+/* Multi-Terminal Grid - Matrix Cyberpunk Styling */
+.multiTerminalGrid {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: 
+    radial-gradient(circle at 25% 25%, #0f0f23 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, #001a2e 0%, transparent 50%),
+    linear-gradient(45deg, #000814 0%, #001d3d 50%, #000814 100%);
+  color: #00ff41;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  overflow: hidden;
+  position: relative;
+}
+
+.multiTerminalGrid::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 65, 0.02) 2px,
+      rgba(0, 255, 65, 0.02) 4px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Status Header */
+.statusHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(0, 20, 40, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid #00ff41;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+  position: relative;
+  z-index: 2;
+  min-height: 50px;
+}
+
+.statusInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.connected {
+  color: #00ff41;
+  text-shadow: 0 0 5px #00ff41;
+}
+
+.disconnected {
+  color: #ff0040;
+  text-shadow: 0 0 5px #ff0040;
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+.errorText {
+  color: #ffff00;
+  font-size: 12px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.newTerminalBtn {
+  background: linear-gradient(45deg, #00ff41, #00cc33);
+  border: 1px solid #00ff41;
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.newTerminalBtn:hover {
+  background: linear-gradient(45deg, #66ff66, #00ff41);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 255, 65, 0.4);
+}
+
+.newTerminalBtn:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.terminalCount {
+  color: #0ff;
+  font-size: 13px;
+  text-shadow: 0 0 3px #0ff;
+}
+
+/* Terminal Grid */
+.terminalGrid {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* Terminal Session */
+.terminalSession {
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 20, 40, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid #00ff41;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 
+    0 0 15px rgba(0, 255, 65, 0.2),
+    inset 0 0 15px rgba(0, 255, 65, 0.1);
+  position: relative;
+}
+
+.terminalSession::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+  animation: shine 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.terminalSession:hover {
+  border-color: #0ff;
+  box-shadow: 
+    0 0 25px rgba(0, 255, 255, 0.4),
+    inset 0 0 25px rgba(0, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.terminalSession.active {
+  border-color: #ffff00;
+  box-shadow: 
+    0 0 30px rgba(255, 255, 0, 0.5),
+    inset 0 0 30px rgba(255, 255, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Terminal Header */
+.terminalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid #00ff41;
+  font-size: 12px;
+  min-height: 32px;
+}
+
+.terminalInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.shellIcon {
+  font-size: 14px;
+}
+
+.terminalTitle {
+  color: #00ff41;
+  font-weight: 600;
+  text-shadow: 0 0 3px #00ff41;
+}
+
+.workbranchId {
+  color: #0ff;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.terminalId {
+  color: #ffff00;
+  font-size: 10px;
+  opacity: 0.7;
+  background: rgba(255, 255, 0, 0.1);
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 0, 0.3);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.connectionIndicator {
+  font-size: 8px;
+}
+
+.terminalControls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.safeModeButton {
+  background: transparent;
+  border: 1px solid #666;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.safeModeButton.enabled {
+  border-color: #00ff41;
+  color: #00ff41;
+  background: rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
+}
+
+.safeModeButton.disabled {
+  border-color: #ffff00;
+  color: #ffff00;
+  background: rgba(255, 255, 0, 0.1);
+  box-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+}
+
+.safeModeButton:hover {
+  transform: scale(1.1);
+}
+
+.searchButton,
+.exportButton {
+  background: transparent;
+  border: 1px solid #0ff;
+  color: #0ff;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.searchButton:hover,
+.exportButton:hover {
+  background: rgba(0, 255, 255, 0.1);
+  transform: scale(1.1);
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+.closeButton {
+  background: transparent;
+  border: 1px solid #ff0040;
+  color: #ff0040;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.closeButton:hover {
+  background: #ff0040;
+  color: #000;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #ff0040;
+}
+
+/* Terminal Content */
+.terminalContent {
+  flex: 1;
+  background: rgba(0, 8, 20, 0.8);
+  position: relative;
+  min-height: 300px;
+}
+
+/* xterm.js styling overrides */
+.terminalContent :global(.xterm) {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.terminalContent :global(.xterm-viewport) {
+  background: transparent !important;
+}
+
+.terminalContent :global(.xterm-screen) {
+  background: transparent !important;
+}
+
+/* Add Terminal Placeholder */
+.addTerminalPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #555;
+  border-radius: 8px;
+  cursor: pointer;
+  background: rgba(37, 37, 38, 0.3);
+  transition: all 0.3s ease;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+}
+
+.addTerminalPlaceholder:hover {
+  border-color: #00ff41;
+  background: rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+}
+
+.placeholderContent {
+  text-align: center;
+  color: #888;
+  transition: all 0.3s ease;
+}
+
+.addTerminalPlaceholder:hover .placeholderContent {
+  color: #00ff41;
+  text-shadow: 0 0 5px #00ff41;
+}
+
+.placeholderIcon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  font-weight: 300;
+}
+
+.placeholderText {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.emptyStateContent {
+  text-align: center;
+  color: #888;
+  max-width: 400px;
+  padding: 40px;
+}
+
+.emptyStateIcon {
+  font-size: 72px;
+  margin-bottom: 24px;
+  opacity: 0.7;
+}
+
+.emptyStateContent h3 {
+  color: #00ff41;
+  margin: 0 0 16px 0;
+  font-size: 24px;
+  text-shadow: 0 0 10px #00ff41;
+}
+
+.emptyStateContent p {
+  margin: 12px 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.connectionHelp {
+  color: #ffff00 !important;
+  font-size: 14px !important;
+  margin-top: 20px !important;
+  text-shadow: 0 0 5px #ffff00;
+}
+
+.connectionHelp code {
+  background: rgba(255, 255, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: inherit;
+  color: #ffff00;
+  border: 1px solid rgba(255, 255, 0, 0.3);
+}
+
+/* Animations */
+@keyframes pulse {
+  from {
+    opacity: 0.6;
+    text-shadow: 0 0 3px currentColor;
+  }
+  to {
+    opacity: 1;
+    text-shadow: 0 0 8px currentColor;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .terminalGrid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .terminalGrid {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  .statusHeader {
+    padding: 8px 12px;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  
+  .controls {
+    justify-content: space-between;
+  }
+  
+  .terminalSession {
+    min-height: 250px;
+  }
+}
