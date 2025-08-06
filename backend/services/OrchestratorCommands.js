@@ -71,7 +71,7 @@ class OrchestratorCommands {
       }
 
       // Simple greeting - Claude IS the orchestrator
-      const greeting = `🤖 Orchestrator Terminal Ready\r\n═══════════════════════════════════════\r\n\r\nThis terminal is for Claude Code CLI to orchestrate your development.\r\nType 'claude' to start.\r\n\r\n$ `;
+      const greeting = `🤖 Orchestrator Terminal Ready\r\n═══════════════════════════════════════\r\n\r\n⚠️  This terminal intercepts orchestrator commands automatically!\r\n\r\n📋 Orchestrator Commands (just type them):\r\n  • ohelp         - Show all orchestrator commands\r\n  • status        - Show active agents\r\n  • spawn test    - Create a test agent\r\n  • send test "pwd" - Send command to agent\r\n\r\n🔧 Regular bash commands work too:\r\n  • ls, pwd, cd   - Standard Linux commands\r\n  • claude        - Start Claude Code CLI\r\n\r\n[Orchestrator]$ `;
 
       // Use the actual terminal ID that was created
       const actualTerminalId = this.orchestratorTerminalId || terminalId;
@@ -947,7 +947,7 @@ Use 'ohelp' for detailed command reference.`,
   }
 
   /**
-   * Handle terminal input - pass directly to PTY process
+   * Handle terminal input - intercept orchestrator commands or pass to PTY
    * @private
    */
   async _handleTerminalInput(ws, data) {
@@ -957,11 +957,60 @@ Use 'ohelp' for detailed command reference.`,
     }
 
     try {
-      // Pass input directly to the PTY process
-      this.orchestratorTerminal.ptyProcess.write(data);
-      console.log(`[ORCHESTRATOR-COMMANDS] Passed input to PTY: ${JSON.stringify(data)}`);
+      // Buffer input to detect complete commands
+      if (!this.inputBuffer) {
+        this.inputBuffer = '';
+      }
+
+      // Add to buffer
+      this.inputBuffer += data;
+
+      // Check for Enter key (carriage return)
+      if (data.includes('\r') || data.includes('\n')) {
+        // Get the complete command
+        const fullCommand = this.inputBuffer.trim();
+        this.inputBuffer = ''; // Clear buffer
+
+        // Check if this is an orchestrator command
+        const orchestratorCommands = [
+          'ohelp', 'status', 'spawn', 'spawn-claude', 'spawn-hidden',
+          'send', 'broadcast', 'logs', 'destroy', 'handoff', 'queue', 'gordon'
+        ];
+        
+        const firstWord = fullCommand.split(' ')[0].toLowerCase();
+        
+        if (orchestratorCommands.includes(firstWord)) {
+          // This is an orchestrator command - process it
+          console.log(`[ORCHESTRATOR-COMMANDS] Intercepted orchestrator command: ${fullCommand}`);
+          
+          // Echo the command to terminal for visual feedback
+          this.orchestratorTerminal.ptyProcess.write(`${fullCommand}\r\n`);
+          
+          // Process the orchestrator command
+          await this.handleOrchestratorCommand(ws, {
+            command: fullCommand,
+            terminalId: this.orchestratorTerminal.terminalId
+          });
+          
+          // Show prompt after command completes
+          this.orchestratorTerminal.ptyProcess.write('[Orchestrator]$ ');
+        } else {
+          // Not an orchestrator command - pass to PTY as normal
+          this.orchestratorTerminal.ptyProcess.write(data);
+        }
+      } else if (data === '\x7f' || data === '\b') {
+        // Handle backspace
+        if (this.inputBuffer.length > 0) {
+          this.inputBuffer = this.inputBuffer.slice(0, -1);
+        }
+        // Pass backspace to PTY for visual feedback
+        this.orchestratorTerminal.ptyProcess.write(data);
+      } else {
+        // Regular character - pass to PTY for echo
+        this.orchestratorTerminal.ptyProcess.write(data);
+      }
     } catch (error) {
-      console.error("[ORCHESTRATOR-COMMANDS] Error writing to PTY:", error);
+      console.error("[ORCHESTRATOR-COMMANDS] Error handling terminal input:", error);
     }
   }
 

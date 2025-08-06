@@ -60,7 +60,10 @@ class TerminalManager {
       return;
     }
 
-    const terminalId = `terminal-${uuidv4()}`;
+    // Use provided ID if it's an orchestrator terminal, otherwise generate new one
+    const terminalId = message.id && message.id.startsWith('orchestrator-') 
+      ? message.id 
+      : `terminal-${uuidv4()}`;
     const instanceNumber = this.terminals.size + 1;
 
     try {
@@ -394,7 +397,7 @@ class TerminalManager {
           ...process.env,
           PATH: `/home/node/bin:/home/node/node_modules/.bin:${process.env.PATH}`,
           TERM: "xterm-color",
-          AGENT_WORKSPACE: agentWorkspace,
+          AGENT_WORKSPACE: workingDir,
           AGENT_ID: instanceNumber.toString(),
         },
       });
@@ -425,13 +428,13 @@ class TerminalManager {
     // Set up timeout
     this._resetTerminalTimeout(terminalId);
 
-    // Send initial setup commands for regular terminals
-    if (!isClaudeAgent) {
+    // Send initial setup commands for regular terminals (but not orchestrator)
+    if (!isClaudeAgent && !message.isOrchestrator) {
       ptyProcess.write(
-        `# Agent ${instanceNumber} Workspace: ${terminalInfo.ptyProcess.options?.cwd}\r\n`
+        `# Agent ${instanceNumber} Workspace: ${workingDir}\r\n`
       );
       ptyProcess.write(
-        `# You are restricted to: ${terminalInfo.ptyProcess.options?.cwd}\r\n`
+        `# You are restricted to: ${workingDir}\r\n`
       );
       ptyProcess.write(
         `# Claude will not be able to access files outside this directory.\r\n`
@@ -532,7 +535,7 @@ class TerminalManager {
    */
   _logTerminalOutput(terminalId, data) {
     try {
-      const logDir = path.join(__dirname, "..", "logs", terminalId);
+      const logDir = path.join("/tmp", "logs", terminalId);
       fs.mkdirSync(logDir, { recursive: true });
 
       const logFile = path.join(logDir, "recent.log");

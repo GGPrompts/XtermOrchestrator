@@ -10,6 +10,8 @@ This is a **Standalone XTerm Orchestrator** - a web-based terminal emulator with
 - WebSocket communication between frontend and backend
 - Support for running Claude Code CLI directly in the browser
 - Multi-terminal orchestration for managing multiple agent sessions
+- **Automatic command interception** for orchestrator commands
+- **Custom slash commands** for Claude Code integration
 
 ## 🏗️ Architecture Overview
 
