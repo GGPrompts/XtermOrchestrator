@@ -5,7 +5,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: ../docker/Dockerfile.frontend
     container_name: xterm-orchestrator-frontend
     ports:
       - "8088:3000"
@@ -23,7 +23,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: ../docker/Dockerfile.terminal-backend
     container_name: xterm-orchestrator-backend
     ports:
       - "8126:8126"
